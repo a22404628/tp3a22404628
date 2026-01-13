@@ -70,7 +70,21 @@ function setup() {
     s.setVolume(0);
   });
 
-  calculateEllipse();
+  function calculateEllipse() {
+  // ocupa quase toda a largura
+  radiusX = width * 0.48;     // ~96% da largura total (2 * 0.48)
+  radiusY = height * 0.18;    // ajusta a “altura” da elipse
+
+  // centrada na horizontal
+  centerX = width / 2;
+
+  // posicionada mais acima na página (ajusta se quiseres)
+  centerY = height * 0.28;
+
+  // segurança para não cortar
+  radiusY = min(radiusY, centerY - 10);
+}
+;
   generateClouds();
 
   loaded = true;
@@ -261,3 +275,4 @@ function stopCurrentLoop() {
     currentLoopIndex = -1;
   }
 }
+
