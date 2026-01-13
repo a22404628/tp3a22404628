@@ -70,21 +70,7 @@ function setup() {
     s.setVolume(0);
   });
 
-  function calculateEllipse() {
-  // ocupa quase toda a largura
-  radiusX = width * 0.48;     // ~96% da largura total (2 * 0.48)
-  radiusY = height * 0.18;    // ajusta a “altura” da elipse
-
-  // centrada na horizontal
-  centerX = width / 2;
-
-  // posicionada mais acima na página (ajusta se quiseres)
-  centerY = height * 0.28;
-
-  // segurança para não cortar
-  radiusY = min(radiusY, centerY - 10);
-}
-;
+  calculateEllipse();
   generateClouds();
 
   loaded = true;
@@ -97,17 +83,20 @@ function windowResized() {
 
   resizeCanvas(w, h);
   calculateEllipse();
-  generateClouds(); // re-cria nuvens para o novo tamanho
+  generateClouds();
 }
 
+// ✅ ESTA É A ÚNICA calculateEllipse()
 function calculateEllipse() {
-  // usa width/height do canvas (não windowWidth/windowHeight)
-  radiusX = width * 0.35;
-  radiusY = height * 0.2;
+  // elipse quase full-width
+  radiusX = width * 0.48;   // ~96% da largura
+  radiusY = height * 0.18;  // altura da elipse
 
-  // canto superior esquerdo
-  centerX = radiusX + 20;
-  centerY = radiusY + 20;
+  centerX = width / 2;      // centrada horizontalmente
+  centerY = height * 0.28;  // mais acima
+
+  // segurança para não cortar no topo
+  radiusY = min(radiusY, centerY - 10);
 }
 
 function generateClouds() {
@@ -181,7 +170,7 @@ function draw() {
   ellipse(centerX, centerY, 10 + cp, 10 + cp);
 
   if (started && inside) {
-    // pitch exponencial (quase nada em lento, óbvio em rápido)
+    // pitch exponencial
     let t = constrain(speed / 30, 0, 1);
     t = pow(t, 3.0);
     let pitch = 1.0 + t * (2.5 - 1.0);
@@ -191,7 +180,7 @@ function draw() {
     let freq = map(d, 0, 1, 4000, 600);
     filter.freq(freq);
 
-    // pan horizontal
+    // pan
     let pan = constrain(nx, -1, 1);
 
     if (!currentLoop) {
@@ -275,4 +264,3 @@ function stopCurrentLoop() {
     currentLoopIndex = -1;
   }
 }
-
